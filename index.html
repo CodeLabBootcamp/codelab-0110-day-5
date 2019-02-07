@@ -45,11 +45,11 @@
                             <div class="row justify-content-center">
 
                                 <div class="col-auto">
-                                    <button v-if="!isUpdate" @click="addMovie" class="btn btn-primary">
-                                        Add
+                                    <button @click="save" class="btn btn-primary">
+                                        {{ isUpdate ? "Update" : "Add" }}
                                     </button>
-                                    <button v-if="isUpdate" @click="updateMovie" class="btn btn-primary">
-                                        Update
+                                    <button v-if="isUpdate" @click="clearFields" class="btn btn-warning">
+                                        Cancel
                                     </button>
                                 </div>
 
@@ -99,7 +99,7 @@
             },
         },
         methods: {
-            addMovie() {
+            save() {
 
                 if (this.movie.title == "")
                     return alert("Please enter the title");
@@ -119,46 +119,26 @@
                 // })
 
                 // The whole object
-                axios.post('http://codelab.camp/movies', this.movie).then(response => {
-                    if (response.data.success) {
+                if (this.isUpdate) {
+                    axios.put(`http://codelab.camp/movies/${this.movie.id}`, this.movie).then(response => {
+                        if (response.data.success) {
+                            this.fetchMovies();
+                            alert("Movie added updated");
+                            this.clearFields();
+                        }
+                    })
+                } else {
+                    axios.post('http://codelab.camp/movies', this.movie).then(response => {
+                        if (response.data.success) {
+                            this.fetchMovies();
+                            alert("Movie added successfully");
+                            this.clearFields();
 
-                        this.fetchMovies();
-
-                        alert("Movie added successfully");
-
-                    }
-                })
+                        }
+                    })
+                }
 
 
-            },
-            updateMovie(){
-                if (this.movie.title == "")
-                    return alert("Please enter the title");
-
-                if (this.movie.releaseYear == "")
-                    return alert("Please enter the releaseYear");
-
-                if (this.movie.image == "")
-                    return alert("Please enter the image url");
-
-                // DO NOT ADD SLASH AT THE END
-                // axios.post('http://codelab.camp/movies', {
-                //     title: this.movie.title,
-                //     image: this.movie.image,
-                //     releaseYear: this.movie.releaseYear,
-                //     rating: this.movie.rating,
-                // })
-
-                // The whole object
-                axios.put(`http://codelab.camp/movies/${this.movie.id}`, this.movie).then(response => {
-                    if (response.data.success) {
-
-                        this.fetchMovies();
-
-                        alert("Movie updated successfully");
-
-                    }
-                })
             },
             removeMovie(movie) {
 
@@ -176,13 +156,21 @@
                 });
                 console.log(movie);
             },
-            editMovie(movie){
+            editMovie(movie) {
                 this.movie = movie;
             },
             fetchMovies() {
                 axios.get("http://codelab.camp/movies").then(response => {
                     this.movies = response.data.movies;
                 })
+            },
+            clearFields(){
+                this.movie = {
+                    title: "",
+                    rating: 0,
+                    image: "",
+                    releaseYear: ""
+                };
             }
         },
         mounted() {
@@ -197,7 +185,7 @@
 
         },
         computed: {
-            isUpdate(){
+            isUpdate() {
                 return this.movie.hasOwnProperty('id');
             }
         }
