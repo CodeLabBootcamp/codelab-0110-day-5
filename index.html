@@ -9,22 +9,23 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
 </head>
 <body class="bg-light">
-<div class="container">
+<div class="container" id="codelab">
     <div class="row justify-content-center mt-5">
         <div class="col-md-5">
             <div class="card">
                 <div class="card-body">
                     <div class="form-group">
                         <label for="title">Title</label>
-                        <input type="text" id="title" class="form-control">
+                        <input v-model="post.title" type="text" id="title" class="form-control">
                     </div>
                     <div class="form-group">
                         <label for="content">Content</label>
-                        <textarea class="form-control" name="" id="content" cols="30" rows="4"></textarea>
+                        <textarea v-model="post.content" class="form-control" name="" id="content" cols="30"
+                                  rows="4"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="image">Image</label>
-                        <input type="text" id="image" class="form-control">
+                        <input v-model="post.image" type="text" id="image" class="form-control">
                     </div>
                     <div class="row justify-content-center">
                         <div class="col-auto">
@@ -38,5 +39,20 @@
         </div>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    new Vue({
+        el: "#codelab",
+        data: {
+            posts: [],
+            post: {
+                title: "",
+                content: "",
+                image: ""
+            },
+        },
+
+    })
+</script>
 </body>
 </html>
