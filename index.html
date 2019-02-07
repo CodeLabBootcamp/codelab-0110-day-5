@@ -18,21 +18,32 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="title">Title</label>
-                                <input v-model.trim="post.title" type="text" id="title" class="form-control">
+                                <input v-model.trim="movie.title" type="text" id="title" class="form-control">
                             </div>
-                            <div class="form-group">
-                                <label for="content">Content</label>
-                                <textarea v-model.trim="post.content" class="form-control" name="" id="content"
-                                          cols="30"
-                                          rows="4"></textarea>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="rating">Release Year</label>
+                                        <input v-model.trim="movie.releaseYear" type="text" id="releaseYear"
+                                               class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="rating">Rating</label>
+                                        <input v-model.trim="movie.rating" type="text" id="rating" class="form-control">
+                                    </div>
+                                </div>
                             </div>
+
                             <div class="form-group">
                                 <label for="image">Image</label>
-                                <input v-model.trim="post.image" type="text" id="image" class="form-control">
+                                <input v-model.trim="movie.image" type="text" id="image" class="form-control">
                             </div>
                             <div class="row justify-content-center">
                                 <div class="col-auto">
-                                    <button @click="addPost" class="btn btn-primary">
+                                    <button @click="addMovie" class="btn btn-primary">
                                         Add
                                     </button>
                                 </div>
@@ -41,16 +52,16 @@
                     </div>
                 </div>
             </div>
-            <div class="row mt-5" v-for="post in posts">
+            <div class="row mt-5" v-for="movie in movies">
                 <div class="col">
                     <div class="card">
                         <div class="card-header">
-                            {{post.title}}
+                            {{movie.title}}
                         </div>
-                        <img :src="post.image" class="card-img-top">
+                        <img :src="movie.image" class="card-img-top">
                         <div class="card-body">
                             <p class="card-text">
-                                {{post.content}}
+                                {{movie.releaseYear}} - {{movie.rating}}
                             </p>
                         </div>
                     </div>
@@ -64,29 +75,30 @@
     new Vue({
         el: "#codelab",
         data: {
-            posts: [],
-            post: {
+            movies: [],
+            movie: {
                 title: "",
-                content: "",
-                image: ""
+                rating: 0,
+                image: "",
+                releaseYear: ""
             },
         },
         methods: {
-            addPost() {
+            addMovie() {
 
-                if (this.post.title == "")
+                if (this.movie.title == "")
                     return alert("Please enter the title");
 
-                if (this.post.content == "")
-                    return alert("Please enter the content");
+                if (this.movie.releaseYear == "")
+                    return alert("Please enter the releaseYear");
 
-                if (this.post.image == "")
+                if (this.movie.image == "")
                     return alert("Please enter the image url");
 
 
-                this.posts.push(this.post);
+                this.movies.push(this.movie);
 
-                this.post = {
+                this.movie = {
                     title: "",
                     content: "",
                     image: ""
