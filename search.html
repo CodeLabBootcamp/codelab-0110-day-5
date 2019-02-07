@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+
+</head>
+<body class="bg-light">
+<div class="container" id="codelab">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-5">
+            <div class="row">
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <input v-model="search" type="text" class="form-control" placeholder="Search for movie...">
+                        <div class="input-group-append">
+                            <button @click="fetchSearch" class="btn btn-outline-secondary" type="button">Search</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" v-if="movie != null">
+                <div class="col">
+                    <div class="card">
+                        <img :src="movie.Poster" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">{{movie.Title}}</h5>
+                            <p class="card-text">{{movie.Plot}}</p>
+                            <a target="_blank" :href="movie.Website" class="btn btn-primary">Visit Website</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center" v-else>
+            <div class="col-auto">
+                <h3>{{searchedBefore ? "Movie not found" : "Search for something..."}}</h3>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    vue = new Vue({
+        el: "#codelab",
+        data: {
+            search: "",
+            movie: null,
+            searchedBefore: false,
+        },
+        methods: {
+            fetchSearch() {
+
+                // axios.post("url",data or body,config)
+                // axios.get("url",config)
+
+                axios.get("http://www.omdbapi.com/", {
+                    params: {
+                        apiKey: "9204bcdf",
+                        t: this.search
+                    }
+                }).then(response => {
+                    this.searchedBefore = true;
+                    if (response.data.Response == "True") {
+                        // Movie Found
+                        this.movie = response.data;
+                    } else {
+                        this.movie = null;
+                    }
+                });
+
+                // axios.get(`http://www.omdbapi.com/?apiKey=9204bcdf&t=${this.search}`);
+
+            }
+        }
+    })
+</script>
+</body>
+</html>
