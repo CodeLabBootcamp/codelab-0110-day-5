@@ -24,7 +24,7 @@
                                 <div class="col">
                                     <div class="form-group">
                                         <label for="rating">Release Year</label>
-                                        <input v-model.trim="movie.releaseYear" type="text" id="releaseYear"
+                                        <input v-model.trim="movie.releaseYear" type="number" id="releaseYear"
                                                class="form-control">
                                     </div>
                                 </div>
@@ -32,7 +32,8 @@
                                 <div class="col">
                                     <div class="form-group">
                                         <label for="rating">Rating</label>
-                                        <input v-model.trim="movie.rating" type="text" id="rating" class="form-control">
+                                        <input v-model.trim="movie.rating" type="number" id="rating"
+                                               class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -71,8 +72,10 @@
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
 <script>
-    new Vue({
+    let vue = new Vue({
         el: "#codelab",
         data: {
             movies: [],
@@ -104,9 +107,23 @@
                     image: ""
                 };
             }
+        },
+        mounted() {
+
+            // this == window => true
+            // axios.get("http://codelab.camp/movies").then(function(response){
+            //     vue.movies = response.data.movies;
+            // });
+
+            // this == vue => true
+            axios.get("http://codelab.camp/movies").then(response => {
+                this.movies = response.data.movies;
+            })
+
         }
 
-    })
+    });
+
 </script>
 </body>
 </html>
