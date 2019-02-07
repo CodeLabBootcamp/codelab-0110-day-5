@@ -12,30 +12,50 @@
 <div class="container" id="codelab">
     <div class="row justify-content-center mt-5">
         <div class="col-md-5">
-            <div class="card">
-            <div class="card-body">
-                <div class="form-group">
-                    <label for="title">Title</label>
-                    <input v-model.trim="post.title" type="text" id="title" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label for="content">Content</label>
-                    <textarea v-model.trim="post.content" class="form-control" name="" id="content" cols="30"
-                              rows="4"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="image">Image</label>
-                    <input v-model.trim="post.image" type="text" id="image" class="form-control">
-                </div>
-                <div class="row justify-content-center">
-                    <div class="col-auto">
-                        <button @click="addPost" class="btn btn-primary">
-                            Add
-                        </button>
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="title">Title</label>
+                                <input v-model.trim="post.title" type="text" id="title" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="content">Content</label>
+                                <textarea v-model.trim="post.content" class="form-control" name="" id="content"
+                                          cols="30"
+                                          rows="4"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="image">Image</label>
+                                <input v-model.trim="post.image" type="text" id="image" class="form-control">
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-auto">
+                                    <button @click="addPost" class="btn btn-primary">
+                                        Add
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+            <div class="row mt-5" v-for="post in posts">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            {{post.title}}
+                        </div>
+                        <img :src="post.image" class="card-img-top">
+                        <div class="card-body">
+                            <p class="card-text">
+                                {{post.content}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
