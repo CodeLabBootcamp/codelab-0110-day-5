@@ -43,12 +43,19 @@
                                 <input v-model.trim="movie.image" type="text" id="image" class="form-control">
                             </div>
                             <div class="row justify-content-center">
+
                                 <div class="col-auto">
-                                    <button @click="addMovie" class="btn btn-primary">
+                                    <button v-if="!isUpdate" @click="addMovie" class="btn btn-primary">
                                         Add
                                     </button>
+                                    <button v-if="isUpdate" @click="updateMovie" class="btn btn-primary">
+                                        Update
+                                    </button>
                                 </div>
+
+
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -60,7 +67,7 @@
                             {{movie.title}}
                             <div class="btn-group btn-sm">
 
-                                <button class="btn btn-warning btn-sm">Edit</button>
+                                <button @click="editMovie(movie)" class="btn btn-warning btn-sm">Edit</button>
                                 <button @click="removeMovie(movie)" class="btn btn-danger btn-sm">Remove</button>
                             </div>
                         </div>
@@ -124,6 +131,35 @@
 
 
             },
+            updateMovie(){
+                if (this.movie.title == "")
+                    return alert("Please enter the title");
+
+                if (this.movie.releaseYear == "")
+                    return alert("Please enter the releaseYear");
+
+                if (this.movie.image == "")
+                    return alert("Please enter the image url");
+
+                // DO NOT ADD SLASH AT THE END
+                // axios.post('http://codelab.camp/movies', {
+                //     title: this.movie.title,
+                //     image: this.movie.image,
+                //     releaseYear: this.movie.releaseYear,
+                //     rating: this.movie.rating,
+                // })
+
+                // The whole object
+                axios.put(`http://codelab.camp/movies/${this.movie.id}`, this.movie).then(response => {
+                    if (response.data.success) {
+
+                        this.fetchMovies();
+
+                        alert("Movie updated successfully");
+
+                    }
+                })
+            },
             removeMovie(movie) {
 
                 // axios.delete("http://codelab.camp/movies/" + movie.id)
@@ -139,6 +175,9 @@
                     }
                 });
                 console.log(movie);
+            },
+            editMovie(movie){
+                this.movie = movie;
             },
             fetchMovies() {
                 axios.get("http://codelab.camp/movies").then(response => {
@@ -156,6 +195,11 @@
             // this == vue => true
             this.fetchMovies();
 
+        },
+        computed: {
+            isUpdate(){
+                return this.movie.hasOwnProperty('id');
+            }
         }
 
     });
