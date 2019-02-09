@@ -21,8 +21,12 @@
 
             transform: scale(1.3);
         }
+
         .overflow-hidden {
             overflow: hidden;
+        }
+        .c-pointer {
+            cursor: pointer;
         }
     </style>
 </head>
@@ -72,19 +76,19 @@
     </div>
     <div class="row">
         <div class="col-12 col-md-4 mt-5" v-for="movie in movies">
-            <div class="card">
-<div class="overflow-hidden">
-    <img :src="movie.Poster" class="card-img-top max-height zoom" alt="...">
+            <a @click="getMovieDetails(movie)" class="c-pointer" >
+                <div class="card">
+                    <div class="overflow-hidden">
+                        <img :src="movie.Poster" class="card-img-top max-height zoom" alt="...">
 
-</div>
+                    </div>
 
-                <div class="card-body">
-                    <h5 class="card-title">{{movie.Title}}</h5>
-                    <p class="card-text">{{movie.Plot}}</p>
-                    <a target="_blank" :href="movie.Website" class="btn btn-primary">Visit Website</a>
-                    <button @click="openModal" class="btn btn-primary">Open Modal</button>
+                    <div class="card-body">
+                        <h5 class="card-title">{{movie.Title}}</h5>
+                        <p class="card-text">{{movie.Plot}}</p>
+                    </div>
                 </div>
-            </div>
+            </a>
         </div>
     </div>
 
@@ -140,6 +144,19 @@
             },
             openModal() {
                 $("#preview-modal").modal("show");
+            },
+            getMovieDetails(movie){
+                axios.get("http://www.omdbapi.com/", {
+                    params: {
+                        apiKey: "9204bcdf",
+                        i: movie.imdbID
+                    },
+                    headers: {
+                        'X-Auth-Token': "e372a11f72b847caaed9d3dbe5bab2f3"
+                    }
+                }).then(response => {
+                    console.log(response.data);
+                })
             }
         }
     })
